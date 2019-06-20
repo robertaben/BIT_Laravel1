@@ -24,7 +24,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                <div>BTA</div>
+                BTA
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -34,6 +34,13 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
+
+                {{-- Patikriname ar vartotojas prisijunges--}}
+                @guest
+                    Login
+                @else
+                    Labas {{ Auth::user()->name }}s
+                @endguest
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('users.index') }}">
@@ -88,13 +95,19 @@
 
     <main class="py-4">
         <div class="container">
-
             @if(Session::has('message'))
-            <div class="alert alert-success">
-                {{ Session::get('message') }}
-            </div>
+                @if(Session::has('message-class'))
+                    <div class="alert {{ Session::get('message-class') }}">
+                        {{ Session::get('message') }}
+                    </div>
+                @else
+                    <div class="alert alert-info">
+                        {{ Session::get('message') }}
+                    </div>
                 @endif
+            @endif
         </div>
+
         @yield('content')
     </main>
 </div>

@@ -40,4 +40,16 @@ class User extends Authenticatable
     public function todoItems() {
         return $this->hasMany('App\ToDoItem', 'user_id','id');
     }
+
+    public function comments() {
+        return$this->hasMany('App\Comment', 'user_id', 'id');
+    }
+
+    public function todoItemsUndone() {
+        return ToDoItem::where('user_id', $this->id)->where('status', 0);
+    }
+
+    public function todoItemsDone() {
+        return ToDoItem::where('user_id', $this->id)->where('status', 1)->get();
+    }
 }

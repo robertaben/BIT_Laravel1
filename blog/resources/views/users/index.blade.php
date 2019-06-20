@@ -2,31 +2,60 @@
 
 @section('content')
     <div class="container">
-        <h1>Users</h1>
-        <div class="col-md-4">
-            @guest
+        <div class="row">
+            <div class="col-md-8">
+                <h1>Users ( {{ $usersCount }} )</h1>
+
+            </div>
+
+            <div class="col-md-4">
+                @guest
+                    {{-- Tu esi svecias tau nerodomas sukurimo mygtukas --}}
                 @else
-            <a class="btn btn-info text-white mb-3" href="{{ route('users.create') }}">
-                Sukurti nauja vartotoja
-            </a>
-                @endif
+                    <a href="{{ route('users.create') }}" class="btn btn-success">
+                        Create user
+                    </a>
+                @endguest
+
+            </div>
         </div>
 
         <table class="table">
             <thead>
-            <th>ID</th>
-            <th>Email</th>
-            <th>Name</th>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Tasks Count</th>
+                <th>Delete</th>
+            </tr>
             </thead>
             @foreach($users as $user)
                 <tr>
                     <td>{{ $user->id }}</td>
                     <td>
-                        <a href="/user/{{$user->id}}">{{ $user->email }}</a>
+                        <a href="/user/{{ $user->id }}">
+                            {{ $user->email }}
+                        </a>
                     </td>
                     <td>
-                        <a href="{{route('users.show', [$user->id])}}">{{ $user->name }}</a>
+                        <a href="{{ route('users.show', [$user->id]) }}">
+                            {{ $user->name }}
+                        </a>
                     </td>
+
+                    <td>
+                        {{ $user->todoItemsUndone()->count() }}
+                    </td>
+
+                    <td>
+                        <form method="post" action="{{ route('users.delete', [$user->id]) }}">
+                            @csrf
+                            {{ method_field('delete') }}
+                            <input type="submit" value="X" class="btn btn-danger">
+                        </form>
+                    </td>
+                </tr>
             @endforeach
         </table>
     </div>

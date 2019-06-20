@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ToDoItem;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -47,9 +48,7 @@ class UserController extends Controller
         }
 
         $user->email= $request->email;
-
         $user->password= Hash::make( $request->input( 'password' ) );
-
         $user->save();
 
         $request->session()->flash('message', 'User was created successfuly!');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
+use App\Http\Requests\StoreTodo;
 use App\ToDoItem;
 use App\User;
 use Illuminate\Http\Request;
@@ -57,8 +59,11 @@ class ToDoController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTodo $request)
     {
+        /* patikriname savo uzklausa */
+        $request->validated();
+
         $todoItem = new todoItem();
         $todoItem->title = $request->input('title');
         $todoItem->user_id = $request->input( 'user_id' );
@@ -66,7 +71,7 @@ class ToDoController extends Controller
 
         $request->session()->flash('message', 'Task was created successfuly!');
 
-        return redirect()->route('todo.index');
+        return redirect()->back();
     }
 
     /**
@@ -77,7 +82,8 @@ class ToDoController extends Controller
      */
     public function show($id)
     {
-        //
+        $item = ToDoItem::find($id);
+        return view( 'todo.show', [ "item" => $item ] );
     }
 
     /**

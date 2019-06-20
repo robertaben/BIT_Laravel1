@@ -32,13 +32,40 @@
 
         <div class="row">
             <div class="col-md-6">
-                <h3>User tasks: {{ count($user->toDoItems) }}</h3>
+                <h3>User tasks to be done: {{ $user->todoItemsUndone()->count() }}</h3>
                 <ul>
-                    @foreach($user->todoItems as $item)
-                        <li>
-                            {{ $item->title }}
-                        </li>
+                    @foreach($user->todoItemsUndone()->get() as $item)
+                        @if($item->status == 0)
+                            <li>
+                                {{ $item->title }}
+                            </li>
+                        @endif
                     @endforeach
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <h3>User tasks done:</h3>
+                <ul>
+                    @foreach($user->todoItemsDone() as $item)
+                        @if($item->status == 1)
+                            <li>
+                                {{ $item->title }}
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <h3>User comments:</h3>
+                <ul>
+                    @foreach($user->comments as $comment )
+                        <li>
+                            Pakomentuota: <a href="{{route('todo.show', [$comment->todo_id])}}">{{ $comment->todoItem->title }} </a>
+                            | {{ $comment->created_at->format('j F, Y') }}
+                        </li>
+                        @endforeach
                 </ul>
             </div>
         </div>

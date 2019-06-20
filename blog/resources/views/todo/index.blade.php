@@ -9,6 +9,7 @@
             {{ method_field('delete') }}
             <input type="submit" value="Delete ALL tasks" class="btn btn-danger text-white mb-3">
         </form>
+
         <a href="{{ route('todo.index') }}">
             View all
         </a>
@@ -38,17 +39,22 @@
             @foreach($todoItems as $item)
                 <tr>
                     <td>
-                        @if( $item->status == 1)
+                        @if($item->status == 1)
                             <div style="text-decoration: line-through">
-                                {{ $item->title}}
+                                <a href="{{ route('todo.show', [$item->id]) }}">
+                                    {{ $item->title }}
+                                </a>
+
                             </div>
-                        @else {{ $item->title }}
-                            @endif
+                        @else
+                            <a href="{{ route('todo.show', [$item->id]) }}">
+                                {{ $item->title }}
+                            </a>
+                        @endif
                     </td>
                     <td>
                         @isset( $item->user)
                             <a href="{{ route('users.show', [$item->user->id]) }}">
-
                                 {{ $item->user->name }}
                             </a>
                         @endisset

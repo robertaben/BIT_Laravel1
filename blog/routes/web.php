@@ -45,4 +45,5 @@ Route::post('/todo/{id}/mark-as-completed', 'ToDoController@markAsCompleted')->n
 Route::delete('/todo/deleteAll', "ToDoController@deleteALL")->name('todo.deleteAll');
 Route::resource('/todo', 'ToDoController');
 
+Route::resource('comment', 'CommentController');
 
