@@ -34,7 +34,6 @@ class ToDoController extends Controller
             $order = "ASC";
         }
 
-
         return view( 'todo.index', [
             "todoItems" => $todoItems,
             "order" => $order,

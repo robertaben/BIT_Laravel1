@@ -6,7 +6,7 @@
             Redaguojame vartotoja: {{ $user->name }}
         </h1>
 
-        <form method="post" action="{{ route('users.update', [$user->id]) }}">
+        <form method="post" action="{{ route('users.update', [$user->id]) }}" enctype="multipart/form-data">
 
             {{ csrf_field() }}
 
@@ -19,6 +19,9 @@
                 <input type="email" name="email" class="form-control" value="{{ $user->email }}">
             </div>
 
+            <div class="form-group">
+                <input accept="image/*" type="file" name="avatar" class="form-control" />
+            </div>
             <input type="submit" class="btn btn-primary">
         </form>
     </div>

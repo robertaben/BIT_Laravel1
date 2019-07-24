@@ -18,6 +18,9 @@
             </div>
 
             <div class="col-md-4">
+                <div class="avatar">
+                    <img src="{{ Storage::url($user->avatar) }}" alt="avatar" style="width: 100%">
+                </div>
                 <h3>Vartotojo nustatymai</h3>
                 <a class="btn btn-info text-white mb-3" href="{{ route('users.edit', [$user->id]) }}">
                     Redaguoti vartotoja

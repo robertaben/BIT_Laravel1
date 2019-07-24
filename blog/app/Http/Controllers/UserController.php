@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\ToDoItem;
 use App\User;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -24,31 +27,46 @@ class UserController extends Controller
         return view('users.edit', ['user' => $user]);
     }
 
-    public function update(Request $request, $id) {
-        $user = User::find($id);
-        $user->name = $_POST['name'];
-        $user->email = $request->input('email');
+    public function update(UserRequest $request, $id) {
+        $user = User::find( $id );
 
+        $user->name  = $_POST['name'];
+        $user->name  = $request->input( 'name' );
+        $user->email = $request->input( 'email' );
+
+        if($request->hasFile('avatar')) {
+            $extension = $request->file('avatar')->getClientOriginalExtension();
+
+            //Storage::delete($user->avatar);
+            $path = $request->file('avatar')->storeAs(
+                'public/avatars', $request->user()->id . '.' . $extension
+            );
+            $user->avatar = $path;
+        }
+
+        // issaugome informaciija duombazeje
         $user->save();
 
-        return redirect()->route('users.index');
+        return redirect()->route( 'users.index' );
     }
 
     public function create() {
         return view('users.create');
     }
 
-    public function store( Request $request ) {
+    public function store( UserRequest $request ) {
 
         $user = new User();
         if ( isset( $request->name ) ) {
-            $user->name= $request->input( 'name' );
+            $user->name = $request->input( 'name' );
         } else {
             return redirect()->route( 'users.create' );
         }
 
-        $user->email= $request->email;
-        $user->password= Hash::make( $request->input( 'password' ) );
+        $user->email    = $request->email;
+
+        $user->password = Hash::make( $request->input( 'password' ) );
+
         $user->save();
 
         $request->session()->flash('message', 'User was created successfuly!');
